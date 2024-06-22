@@ -21,3 +21,10 @@ merged_df = pd.merge(new_payroll_df, Postions_df, on= "Name")
 
 # Save the merged dataframe to a new CSV file
 merged_df.to_csv('Merged.csv', index= False)
+merged_df =  pd.read_csv("Merged.csv")
+
+# Checks if the data has correct format
+merged_df["Date"] = pd.to_datetime(merged_df['Date'])
+
+# Filter by date
+filtered_df = merged_df[(merged_df['Date'] >= '2024-02-02') & (merged_df['Date'] <= '2024-05-31')]
