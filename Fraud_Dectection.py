@@ -1,3 +1,4 @@
+import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 
@@ -39,14 +40,18 @@ filtered_df.insert(9, "Duration", 0)
 filtered_df.to_csv('Filtered.csv', index= False)
 
 # Ensure 'Start Time' and 'End Time' are in datetime format
-filtered_df['Start Time'] = pd.to_datetime(filtered_df['Start Time'], format='%I:%M %p')
-filtered_df['End Time'] = pd.to_datetime(filtered_df['End Time'], format='%I:%M %p')
+filtered_df['Start Time'] = pd.to_datetime(filtered_df['Start Time'], format='%I:%M %p', errors='coerce')
+filtered_df['End Time'] = pd.to_datetime(filtered_df['End Time'], format='%I:%M %p', errors='coerce')
 
 # Total Hours worked
 filtered_df["Duration"] = ((filtered_df["End Time"] - filtered_df["Start Time"]).dt.total_seconds() / 3600).round(3)
 
 # Adjust Duration for negative values by adding 12 hours
 filtered_df.loc[filtered_df['Duration'] < 0, 'Duration'] += 12
+
+# Set Duration to NaN where either Start Time or End Time is missing
+filtered_df.loc[filtered_df['Start Time'].isnull() | filtered_df['End Time'].isnull(), 'Duration'] = np.nan
+
 
 # Saved the the new dataset in a CSV file
 filtered_df.to_csv('Filtered.csv', index= False)
