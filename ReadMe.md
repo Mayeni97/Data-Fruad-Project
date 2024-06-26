@@ -31,10 +31,10 @@ pip install numpy pandas matplotlib
 ### Step-by-Step Guide
 
 #### Step 1: Data Import and Initial Processing
-The first script imports the payroll and position data, filters unnecessary columns, merges the datasets, and processes the time data. The full code for this step can be found [here]().
+The first script imports the payroll and position data, filters unnecessary columns, merges the datasets, and processes the time data. The full code for this step can be found [here](https://github.com/Mayeni97/Data-Fruad-Project/blob/Main/Fraud_Dectection.py).
 
 #### Step 2: Data Analysis and Reporting
-The second script loads the filtered data, calculates descriptive statistics, identifies weekly hours violations, and records work on holidays. The full code for this step can be found [here]().
+The second script loads the filtered data, calculates descriptive statistics, identifies weekly hours violations, and records work on holidays. The full code for this step can be found [here](https://github.com/Mayeni97/Data-Fruad-Project/blob/Main/Data_Analysis.py).
 
 ### Outputs
 1. `New payroll.csv`: Filtered payroll data.
