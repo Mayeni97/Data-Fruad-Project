@@ -34,7 +34,7 @@ filtered_df = merged_df[(merged_df['Date'] >= '2024-02-02') & (merged_df['Date']
 filtered_df = filtered_df[(filtered_df['Speed Type'] == 'CISC112828') | (filtered_df['Speed Type'] == 'CISC112822')]
 
 # Adding Duration columns to the dataset
-#filtered_df.insert(9, "Duration", 0)
+filtered_df.insert(9, "Duration", 0)
 
 # Saved the the new dataset in a CSV file
 
