@@ -48,10 +48,7 @@ filtered_df["End Time"] = filtered_df.apply(lambda row: row["End Time"] + pd.Tim
 # Total Hours worked
 filtered_df["Duration"] = ((filtered_df["End Time"] - filtered_df["Start Time"]).dt.total_seconds() / 3600).round(3)
 
-
-
-
-
 # Saved the the new dataset in a CSV file
 filtered_df.to_csv('Filtered.csv', index= False)
+
 
