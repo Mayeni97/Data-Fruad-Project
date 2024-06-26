@@ -34,25 +34,21 @@ filtered_df = merged_df[(merged_df['Date'] >= '2024-02-02') & (merged_df['Date']
 filtered_df = filtered_df[(filtered_df['Speed Type'] == 'CISC112828') | (filtered_df['Speed Type'] == 'CISC112822')]
 
 # Adding Duration columns to the dataset
-filtered_df.insert(9, "Duration", 0)
+#filtered_df.insert(9, "Duration", 0)
 
 # Saved the the new dataset in a CSV file
-filtered_df.to_csv('Filtered.csv', index= False)
 
 # Ensure 'Start Time' and 'End Time' are in datetime format
 filtered_df['Start Time'] = pd.to_datetime(filtered_df['Start Time'], format='%I:%M %p', errors='coerce')
 filtered_df['End Time'] = pd.to_datetime(filtered_df['End Time'], format='%I:%M %p', errors='coerce')
 
+# Adjust end time by adding 24 hours if start time is greater than end time
+filtered_df["End Time"] = filtered_df.apply(lambda row: row["End Time"] + pd.Timedelta(days=1) if row["Start Time"] > row["End Time"] else row["End Time"], axis=1)
+
 # Total Hours worked
 filtered_df["Duration"] = ((filtered_df["End Time"] - filtered_df["Start Time"]).dt.total_seconds() / 3600).round(3)
 
-# Adjust Duration for negative values by adding 12 hours
-filtered_df.loc[filtered_df['Duration'] < 0, 'Duration'] += 12
-
-# Set Duration to NaN where either Start Time or End Time is missing
-filtered_df.loc[filtered_df['Start Time'].isnull() | filtered_df['End Time'].isnull(), 'Duration'] = np.nan
-
-
 # Saved the the new dataset in a CSV file
 filtered_df.to_csv('Filtered.csv', index= False)
+
 
