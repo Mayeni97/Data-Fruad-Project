@@ -1,7 +1,11 @@
 import pandas as pd
 import numpy as np
 
-# Loaded filtered.csv file
+def is_holiday(account):
+    return 'holiday' in str(account).lower()
+
+
+# Load the filtered.csv file
 filtered_df = pd.read_csv('Filtered.csv')
 
 # Convert 'Date' column to datetime
@@ -45,7 +49,10 @@ person_total_hours_file = 'person_total_hours.csv'
 person_total_hours.to_csv(person_total_hours_file, index=False)
 
 # Calculate weekly hours worked for each person
-weekly_hours = filtered_df.groupby(['Name', 'Year', 'Week'])['Duration'].sum().reset_index()
+weekly_hours = filtered_df.groupby(['Name', 'Year', 'Week']).agg({
+    'Duration': 'sum',
+    'Date': 'min'  # Assuming 'Date' is the start of the week
+}).reset_index()
 
 # Calculate overall descriptive statistics for weekly hours worked
 weekly_hours_mean = weekly_hours['Duration'].mean()
@@ -65,4 +72,30 @@ weekly_hours_stats_file = 'weekly_hours_stats.csv'
 weekly_hours_stats_df = pd.DataFrame([weekly_hours_stats])
 weekly_hours_stats_df.to_csv(weekly_hours_stats_file, index=False)
 
+# Identify instances where weekly hours exceed 10
+violations = weekly_hours[weekly_hours['Duration'] > 10]
 
+# Save violations to a file
+violations_file = 'weekly_hours_violations.csv'
+violations.to_csv(violations_file, index=False)
+
+# Define designated holidays (replace with actual dates)
+designated_holidays = filtered_df[filtered_df['Account'].apply(is_holiday)]
+
+
+# Extract the 'Date' column for designated holidays
+holiday_dates = designated_holidays['Date']
+
+# Filter entries on holidays
+holiday_entries = filtered_df[filtered_df['Date'].isin(holiday_dates)]
+
+# Calculate total time for each person on holidays
+holiday_total_time = holiday_entries.groupby('Name')['Duration'].sum().reset_index()
+
+# Save holiday entries to a file
+holiday_entries_file = 'holiday_entries.csv'
+holiday_entries.to_csv(holiday_entries_file, index=False)
+
+# Save total time on holidays to a file (optional)
+holiday_total_time_file = 'holiday_total_time.csv'
+holiday_total_time.to_csv(holiday_total_time_file, index=False)

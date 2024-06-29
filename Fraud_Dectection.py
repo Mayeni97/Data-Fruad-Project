@@ -50,5 +50,3 @@ filtered_df["Duration"] = ((filtered_df["End Time"] - filtered_df["Start Time"])
 
 # Saved the the new dataset in a CSV file
 filtered_df.to_csv('Filtered.csv', index= False)
-
-
